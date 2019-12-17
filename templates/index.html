@@ -1,13 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+{% extends "base.html" %}
+{% block title %}Portfolio{% endblock %}
+{% block content %}
+    <p>Welcome home - sanitarium</p>
 
-    <link href="/static/css/style.css" rel="stylesheet">
-</head>
-<body>
-    <p>Vsebina</p>
-    <img src="/static/img/smart.png" alt="slika">
-</body>
-</html>
+    <p><b>{{ trenutni_cas }}</b></p>
+{% endblock %}

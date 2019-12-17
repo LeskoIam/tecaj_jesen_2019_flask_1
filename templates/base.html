@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body>
+<ul>
+    <li><a href="/">Home</a> </li>
+    <li><a href="/about-me">About Me</a> </li>
+    <li><a href="/portfolio">Portfolio</a> </li>
+</ul>
+Uporabnik:
+{% if user %}
+    {{ user }}
+{% else %}
+    Anonymous
+{% endif %}
+<!--    <p>Vsebina</p>-->
+<!--    <img src="/static/img/smart.png" alt="slika">-->
+    {% block content %}{% endblock %}
+</body>
+</html>

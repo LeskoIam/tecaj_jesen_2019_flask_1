@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}Portfolio{% endblock %}
+{% block content %}
     <p>Portfolio</p>
-</body>
-</html>
+
+{% for project in projects %}
+    <p style="border: solid blue;">{{ project["name"] }}-{{ project.year }}</p>
+{% endfor %}
+{% endblock %}
