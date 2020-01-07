@@ -2,4 +2,14 @@
 {% block title %}About Me{% endblock %}
 {% block content %}
     <p>O meni</p>
+    <form method="post" action="/about-me">
+        <input type="text" name="name" placeholder="Name">
+        <br>
+        <input type="email" name="email" placeholder="Email">
+        <br>
+        <input type="text" name="comment" placeholder="Comment">
+        <br>
+        <button type="submit">Poslji</button>
+    </form>
+
 {% endblock %}
