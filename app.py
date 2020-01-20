@@ -1,5 +1,8 @@
 from flask import Flask, render_template, request, redirect, make_response
 import time
+from models import User, db
+import hashlib
+import uuid
 
 # Documentation is like sex.
 # When it's good, it's very good.
@@ -7,6 +10,7 @@ import time
 # When it lies to you, it may be a while before you realize something's wrong.
 
 app = Flask(__name__)
+db.create_all()
 
 
 @app.route("/index", methods=["GET"])
@@ -15,6 +19,56 @@ def index():
     time_now = time.time()
     user_name = request.cookies.get("name")
     return render_template("index.html", trenutni_cas=time_now, name=user_name)
+
+
+@app.route("/logout", methods=["POST"])
+def logout():
+    session_token = request.cookies.get("session_token")
+    user = db.query(User).filter_by(session_token=session_token).first()
+
+    user.session_token = ""
+    db.add(user)
+    db.commit()
+    return redirect("index")
+
+
+@app.route("/login", methods=["POST"])
+def login():
+    user_name = request.form.get("user_name")
+    user_email = request.form.get("user_email")
+    user_password = request.form.get("user_password")
+    print(user_email)
+    print(user_password)
+    salt = "moj super skrivni string"
+    user_password += salt  # user_password = user_password + salt
+    hashed_password = hashlib.sha256(user_password.encode()).hexdigest()
+    print(hashed_password)
+
+    user = db.query(User).filter_by(email=user_email).first()
+    test = db.query(User).all()
+    print(test)
+    session_token = str(uuid.uuid4())
+    print(session_token)
+
+    print(user)
+    print(type(user))
+
+    if user is None:
+        user = User(name=user_name, password=hashed_password, email=user_email, session_token=session_token)
+        db.add(user)
+        db.commit()
+
+    else:
+        if user.password == hashed_password:
+            user.session_token = session_token
+            db.add(user)
+            db.commit()
+        else:
+            return "Wrong password, please try again!"
+
+    response = make_response(redirect("index"))
+    response.set_cookie("session_token", session_token)
+    return response
 
 
 @app.route("/about-me", methods=["GET", "POST"])
@@ -35,6 +89,8 @@ def about_me():
 
 @app.route("/portfolio", methods=["GET"])
 def portfolio():
+    session_token = request.cookies.get("session_token")
+    user = db.query(User).filter_by(session_token=session_token).first()
     projects = [
         {"name": "Test",
          "year": 2018},
@@ -44,7 +100,7 @@ def portfolio():
          "year": 2017}
     ]
     user_name = request.cookies.get("name")
-    return render_template("portfolio.html", projects=projects, name=user_name)
+    return render_template("portfolio.html", projects=projects, name=user_name, user=user)
 
 
 if __name__ == '__main__':

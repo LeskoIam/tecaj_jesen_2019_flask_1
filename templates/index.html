@@ -4,4 +4,13 @@
     <p>Welcome home - sanitarium</p>
 
     <p><b>{{ trenutni_cas }}</b></p>
+
+    <form action="/login" method="post">
+        <input type="text" placeholder="User Name" name="user_name">
+        <input type="email" placeholder="Email" name="user_email">
+        <input type="password" placeholder="Password" name="user_password">
+
+        <button type="submit">Log In</button>
+    </form>
+
 {% endblock %}

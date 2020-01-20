@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% block title %}Portfolio{% endblock %}
 {% block content %}
+
+{% if user %}
+    Uporabnik: {{ user.name }}
+{% else %}
+    Uporabnik prosim prijavi se!
+{% endif %}
     <p>Portfolio</p>
 
 {% for project in projects %}
