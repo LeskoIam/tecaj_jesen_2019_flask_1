@@ -71,6 +71,52 @@ def login():
     return response
 
 
+@app.route("/profile", methods=["GET", "POST"])
+def user_profile():
+    session_token = request.cookies.get("session_token")
+
+    user1 = db.query(User).filter_by(session_token=session_token).first()
+
+    if user1:
+        # render_template(template, **kwargs)
+        return render_template("user_profile.html", user=user1)
+    else:
+        return redirect("index")
+
+
+@app.route("/edit_user", methods=["POST"])
+def edit_user():
+    session_token = request.cookies.get("session_token")
+    user = db.query(User).filter_by(session_token=session_token).first()
+
+    new_user_name = request.form.get("user_name")
+    new_user_email = request.form.get("user_email")
+
+    user.name = new_user_name
+    user.email = new_user_email
+
+    db.add(user)
+    db.commit()
+
+    return redirect("profile")
+
+
+@app.route("/delete_profile", methods=["GET", "POST"])
+def delete_profile():
+    if request.method == "GET":
+        return render_template("delete_profile.html")
+    elif request.method == "POST":
+        session_token = request.cookies.get("session_token")
+        user = db.query(User).filter_by(session_token=session_token).first()
+
+        db.delete(user)
+        db.commit()
+
+        response = make_response(redirect("index"))
+        response.set_cookie("session_token", "")
+        return response
+
+
 @app.route("/about-me", methods=["GET", "POST"])
 def about_me():
     if request.method == "GET":

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Delete Profile{% endblock %}
+{% block content %}
+
+    <h1 style="color: red;">Are you sure you want to delete your profile?</h1>
+    <form method="post" action="/delete_profile">
+        <button type="submit">I'm sure</button>
+    </form>
+
+{% endblock %}

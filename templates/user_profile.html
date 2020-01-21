@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}User Profile{% endblock %}
+{% block content %}
+
+    <table border="1">
+        <tr>
+            <td>Name</td>
+            <td>{{ user.name }}</td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>{{ user.email }}</td>
+        </tr>
+    </table>
+
+    <!-- Edit user data -->
+    <br><br>
+    <h3>Edit user data</h3>
+    <form action="/edit_user" method="post">
+        <input type="text" placeholder="User Name" name="user_name" value="{{ user.name }}">
+        <input type="email" placeholder="Email" name="user_email" value="{{ user.email }}">
+
+        <button type="submit">Update</button>
+        <a href="/delete_profile">Delete profile</a>
+    </form>
+
+    <hr>
+
+{% endblock %}
