@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, make_response
+import requests
+from flask import Flask, render_template, request, redirect, make_response, jsonify
 import time
 from models import User, db
 import hashlib
@@ -148,6 +149,23 @@ def portfolio():
     user_name = request.cookies.get("name")
     return render_template("portfolio.html", projects=projects, name=user_name, user=user)
 
+
+@app.route("/vreme", methods=["GET"])
+def weather():
+    url = "http://api.openweathermap.org/data/2.5/weather?q=Ljubljana&units=metric&apikey=ad5210298c8369fba090781a076f0f18"
+
+    data = requests.get(url=url)
+    print(data)
+    print(data.json())
+    return render_template("weather.html", weather_data=data.json())
+
+
+@app.route("/api/v1/oseba")
+def my_api():
+    d = {"ime": "Janez",
+         "priimek": "Kranjski",
+         "IBAN": "SI5612341234123"}
+    return jsonify(d)
 
 if __name__ == '__main__':
     app.run(debug=True)

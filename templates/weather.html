@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Weather{% endblock %}
+{% block content %}
+
+    <p>
+        {{ weather_data.main.temp|round|int }} &deg;C<br>
+        {{ weather_data.name }}
+
+    </p>
+
+{% endblock %}
